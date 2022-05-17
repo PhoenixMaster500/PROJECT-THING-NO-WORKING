@@ -1,3 +1,4 @@
+
 from turtle import left, update
 from numpy import angle
 import pygame
@@ -31,6 +32,7 @@ moveSpeed = 10
 run = True
 speed = 60  # NEW
 BGMovementSpeed = 20
+SpaceshipPosX = mx/2 + offsetX
 def redrawWindow():
     surface.blit(BG, (BGX, 0))  # draws our first bg image
     surface.blit(BG, (BGX2, 0))  # draws the second bg image
@@ -55,7 +57,9 @@ while playing:
         if curDir == DOWN:
             offsetY += moveSpeed
         elif curDir == RIGHT:
-            offsetX += moveSpeed
+            if(SpaceshipPosX <= WIDTH):
+                offsetX += moveSpeed
+            
             BGX -= BGMovementSpeed
             BGX2 -= BGMovementSpeed
         elif curDir == LEFT:
@@ -79,8 +83,12 @@ while playing:
         if event.type == pygame.QUIT or X == True:
             playing = False
     # Update Screen
-    surface.blit(BG, (0 * SCALE, 0 * SCALE))
-    redrawWindow()
+    SpaceshipPosX = mx/2 + offsetX
+    if(SpaceshipPosX <= 0 or SpaceshipPosX >= WIDTH):
+        redrawWindow()
+    else:
+         surface.blit(BG, (BGX, 0 * SCALE))
+         surface.blit(BG, (BGX2, 0 * SCALE))
     surface.blit(img_copy, ((mx/2 + offsetX) - int(img_copy.get_width() / 2), (my/2 + offsetY) - int(img_copy.get_height() / 2)))    
     pygame.display.update()
     clock.tick(FRAME_RATE)
