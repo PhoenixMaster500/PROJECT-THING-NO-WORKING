@@ -15,8 +15,8 @@ SCALE = 16
 pygame.display.set_caption("Ty and The Fight for Color")
 BG = pygame.image.load("Characters/Orian.png").convert_alpha()
 BG = pygame.transform.scale(BG, (BG.get_width() * 1,BG.get_height() * 1))
-BGX = 0
-BGX2 = BG.get_width()
+BGX = OGBGX = 0
+BGX2 = OGBGX2 = BG.get_width()
 Ty = GO.Player(960//SCALE, 510//SCALE, health=10, scale=SCALE)
 TyFighter = GO.Spaceship(940//SCALE, 510//SCALE, health=10, scale=1)
 image_angle = 0
@@ -63,7 +63,8 @@ while playing:
             BGX -= BGMovementSpeed
             BGX2 -= BGMovementSpeed
         elif curDir == LEFT:
-            offsetX -= moveSpeed
+            if(SpaceshipPosX >= 0):
+                offsetX -= moveSpeed
             BGX += BGMovementSpeed
             BGX2 += BGMovementSpeed
         elif curDir == UP:
@@ -84,13 +85,16 @@ while playing:
             playing = False
     # Update Screen
     SpaceshipPosX = mx/2 + offsetX
-    if(SpaceshipPosX <= 0 or SpaceshipPosX >= WIDTH):
+    if(SpaceshipPosX - 960 <= -970 or SpaceshipPosX - 960 >= 970):
         redrawWindow()
     else:
-         surface.blit(BG, (BGX, 0 * SCALE))
-         surface.blit(BG, (BGX2, 0 * SCALE))
+        surface.blit(BG, (OGBGX, 0 * SCALE))
+        surface.blit(BG, (OGBGX2, 0 * SCALE))
     surface.blit(img_copy, ((mx/2 + offsetX) - int(img_copy.get_width() / 2), (my/2 + offsetY) - int(img_copy.get_height() / 2)))    
     pygame.display.update()
     clock.tick(FRAME_RATE)
 
 pygame.quit()
+
+
+#Note for the breaking we might need to deleat the last blit of the ship when we blit it again

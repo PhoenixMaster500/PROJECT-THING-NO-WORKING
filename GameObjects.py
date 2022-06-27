@@ -1,5 +1,4 @@
 
-from email.mime import image
 from turtle import position
 from numpy import angle
 import pygame
